@@ -12,7 +12,7 @@ const backgroundLevel1 = new Sprite({
     x: 0,
     y: 0,
   },
-  imageSrc: "img/backgrounds/map1.png",
+  imageSrc: "img/backgrounds/Map1.png",
 });
 
 const wizard = new Sprite({
@@ -20,7 +20,7 @@ const wizard = new Sprite({
     x: 864,
     y: 276,
   },
-  imageSrc: "img/characters/wizard/idlel.png",
+  imageSrc: "img/characters/wizard/IdleL.png",
   frameRate: 6,
   frameBuffer: 12,
   
