@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="game">
+        <canvas id="canvas"></canvas>
+        <div class="input">
+          <form onsubmit="enviar(event)">
+            <input type="text" id="message" placeholder="Message" autocomplete="off" />
+            <input type="submit" id="submit" value="Submit" />
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/chat.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/collisions.js"></script>
+    <script src="js/eventListener.js"></script>
+    <script src="js/classes/ChatBubble.js"></script>
+    <script src="js/classes/CollisionBlock.js"></script>
+    <script src="js/classes/Sprite.js"></script>
+    <script src="js/classes/Player.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
