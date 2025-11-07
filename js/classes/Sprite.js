@@ -11,8 +11,8 @@ class Sprite {
     this.loaded = false;
     this.frameRate = frameRate;
     this.currentFrame = 0;
-    this.elapsedFrames = 0;
-    this.frameBuffer = 24;
+    this.elapsedTime = 0;
+    this.frameDuration = 200; // ms por frame
     this.animations = animations;
 
     if(this.animations){
@@ -45,16 +45,15 @@ class Sprite {
       this.width,
       this.height
     );
-
-    this.updateFrames();
   }
 
-  updateFrames() {
-    this.elapsedFrames++;
+  update(deltaTime) {
+    this.elapsedTime += deltaTime;
 
-    if (this.elapsedFrames % this.frameBuffer === 0) {
+    if (this.elapsedTime >= this.frameDuration) {
       if (this.currentFrame < this.frameRate - 1) this.currentFrame++;
       else this.currentFrame = 0;
+      this.elapsedTime = 0;
     }
   }
 }

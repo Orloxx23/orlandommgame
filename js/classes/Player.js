@@ -14,31 +14,26 @@ class Player extends Sprite {
     this.sides = {
       bottom: this.position.y + this.height,
     };
-    this.gravity = 1;
+    this.gravity = 0.5;
+    this.jumpForce = -8;
+    this.moveSpeed = 1.5;
 
     this.collisionBlocks = collisionBlocks;
   }
 
-  update() {
-    // Blue box
-    // c.fillStyle = 'rgba(0, 0, 255, 0.5)'
-    // c.fillRect(this.position.x, this.position.y, this.width, this.height)
-
-    this.position.x += this.velocity.x;
+  update(deltaTime) {
+    super.update(deltaTime);
+    
+    const deltaMultiplier = deltaTime / 16.67; // 60 FPS base
+    
+    this.position.x += this.velocity.x * deltaMultiplier;
 
     this.updateHitbox();
 
     this.checkForHorizontalCollision();
-    this.applyGravity();
+    this.applyGravity(deltaMultiplier);
 
     this.updateHitbox();
-
-    //  c.fillRect(
-    //    this.hitbox.position.x,
-    //    this.hitbox.position.y,
-    //    this.hitbox.width,
-    //    this.hitbox.height
-    //  );
 
     this.checkForVerticalCollision();
   }
@@ -46,9 +41,10 @@ class Player extends Sprite {
   switchSprite(name) {
     if (this.image === this.animations[name].image) return;
     this.currentFrame = 0;
+    this.elapsedTime = 0;
     this.image = this.animations[name].image;
     this.frameRate = this.animations[name].frameRate;
-    this.frameBuffer = this.animations[name].frameBuffer;
+    this.frameDuration = this.animations[name].frameDuration || 200;
     this.loop = this.animations[name].loop;
     this.currentAnimation = this.animations[name];
   }
@@ -64,10 +60,9 @@ class Player extends Sprite {
     };
   }
 
-  applyGravity() {
-    this.velocity.y += this.gravity;
-    this.position.y += this.velocity.y;
-    // this.sides.bottom = this.position.y + this.height;
+  applyGravity(deltaMultiplier) {
+    this.velocity.y += this.gravity * deltaMultiplier;
+    this.position.y += this.velocity.y * deltaMultiplier;
   }
 
   checkForHorizontalCollision() {
@@ -135,15 +130,19 @@ class Player extends Sprite {
     this.velocity.x = 0;
     if (keys.d.pressed) {
       this.switchSprite("runRight");
-      this.velocity.x = 1.25;
+      this.velocity.x = this.moveSpeed;
       this.lastDirection = "right";
     } else if (keys.a.pressed) {
       this.switchSprite("runLeft");
-      this.velocity.x = -1.25;
+      this.velocity.x = -this.moveSpeed;
       this.lastDirection = "left";
     } else {
       if (this.lastDirection === "left") this.switchSprite("idleLeft");
       else this.switchSprite("idleRight");
     }
+  }
+
+  jump() {
+    if (this.velocity.y === 0) this.velocity.y = this.jumpForce;
   }
 }

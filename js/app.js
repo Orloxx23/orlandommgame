@@ -22,8 +22,6 @@ const wizard = new Sprite({
   },
   imageSrc: "img/characters/wizard/IdleL.png",
   frameRate: 6,
-  frameBuffer: 12,
-  
 });
 
 /*c.fillStyle = "white";
@@ -36,25 +34,25 @@ const player = new Player({
   animations: {
     idleRight: {
       frameRate: 4,
-      frameBuffer: 24,
+      frameDuration: 400,
       loop: true,
       imageSrc: "img/characters/player/idleR.png",
     },
     idleLeft: {
       frameRate: 4,
-      frameBuffer: 24,
+      frameDuration: 400,
       loop: true,
       imageSrc: "img/characters/player/idleL.png",
     },
     runRight: {
       frameRate: 7,
-      frameBuffer: 14,
+      frameDuration: 120,
       loop: true,
       imageSrc: "img/characters/player/walkingR.png",
     },
     runLeft: {
       frameRate: 7,
-      frameBuffer: 14,
+      frameDuration: 120,
       loop: true,
       imageSrc: "img/characters/player/walkingL.png",
     },
@@ -73,7 +71,23 @@ const keys = {
   },
 };
 
-function animate() {
+let lastTime = 0;
+let frameCount = 0;
+let fps = 0;
+let lastFpsUpdate = 0;
+
+function animate(currentTime = 0) {
+  const deltaTime = currentTime - lastTime;
+  lastTime = currentTime;
+  
+  // Calcular FPS
+  frameCount++;
+  if (currentTime - lastFpsUpdate >= 1000) {
+    fps = Math.round((frameCount * 1000) / (currentTime - lastFpsUpdate));
+    frameCount = 0;
+    lastFpsUpdate = currentTime;
+  }
+  
   window.requestAnimationFrame(animate);
 
   backgroundLevel1.draw();
@@ -92,11 +106,17 @@ function animate() {
     bubble.draw(c);
   }
   
+  wizard.update(deltaTime);
   wizard.draw();
   player.handleInput(keys);
 
   player.draw();
-  player.update();
+  player.update(deltaTime);
+  
+  // Mostrar FPS
+  c.fillStyle = "white";
+  c.font = "16px Arial";
+  c.fillText(`FPS: ${fps}`, 10, 25);
 }
 
 animate();

@@ -51,7 +51,7 @@ window.addEventListener("keyup", (e) => {
 });
 
 function playerJump() {
-  if (player.velocity.y === 0) player.velocity.y = -10;
+  player.jump();
 }
 
 let clicked = false;
